@@ -23,9 +23,6 @@ public abstract class Vehicle {
         this.gearbox = gearbox;
         this.VIN_id = VIN_id;
         this.colour = colour;
-
-        this.isSold = false;
-        this.mileage = 0;
     }
 
     //SETters (available)
