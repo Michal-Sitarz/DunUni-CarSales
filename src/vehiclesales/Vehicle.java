@@ -6,6 +6,7 @@ package vehiclesales;
 
 public abstract class Vehicle {
     private String make;
+    //
         
     //default ctor
     public Vehicle(){
