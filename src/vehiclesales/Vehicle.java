@@ -74,4 +74,13 @@ public abstract class Vehicle {
         return mileage;
     }
 
+    //other methods
+    @Override
+    public String toString() {
+        return "Vehicle{" + "make=" + make + ", model=" + model + ", year=" + year + ", gearbox=" + gearbox + ", VIN_id=" + VIN_id + ", isSold=" + isSold + ", colour=" + colour + ", mileage=" + mileage + '}';
+    }
+   
+    
+    
+    
 }
