@@ -8,8 +8,8 @@ public class Motorbike extends Vehicle {
     private boolean luggage_box;
 
     //default ctor
-    public Motorbike(boolean luggage_box, String make, String model, int year, Gearbox gearbox, String VIN_id, String colour) {
-        super(make, model, year, gearbox, VIN_id, colour);
+    public Motorbike(String make, String model, int year, Gearbox gearbox, String VIN_id, String colour, int mileage, boolean luggage_box) {
+        super(make, model, year, gearbox, VIN_id, colour, mileage);
         this.luggage_box = luggage_box;
     }
 

@@ -8,8 +8,8 @@ public class SUV extends Car {
     private boolean AWD_drivetrain;
 
     //default ctor
-    public SUV(boolean AWD_drivetrain, String make, String model, int year, Gearbox gearbox, String VIN_id, String colour) {
-        super(make, model, year, gearbox, VIN_id, colour);
+    public SUV(String make, String model, int year, Gearbox gearbox, String VIN_id, String colour, int mileage, boolean AWD_drivetrain) {
+        super(make, model, year, gearbox, VIN_id, colour, mileage);
         this.AWD_drivetrain = AWD_drivetrain;
     }
 

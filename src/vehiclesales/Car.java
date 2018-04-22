@@ -11,8 +11,8 @@ public class Car extends Vehicle {
     private boolean roof_rack;
 
     //default ctor
-    public Car(String make, String model, int year, Gearbox gearbox, String VIN_id, String colour) {
-        super(make, model, year, gearbox, VIN_id, colour);
+    public Car(String make, String model, int year, Gearbox gearbox, String VIN_id, String colour, int mileage) {
+        super(make, model, year, gearbox, VIN_id, colour, mileage);
     }
 
     //SETters
