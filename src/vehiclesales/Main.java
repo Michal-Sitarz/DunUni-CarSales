@@ -44,7 +44,7 @@ public class Main {
     }
 
     public static void addNewVehicle() {
-        System.out.println("[test] addNewVehicle [test]");
+        
     }
 
     // menu: Optional accessories
