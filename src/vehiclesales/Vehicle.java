@@ -11,9 +11,9 @@ public abstract class Vehicle {
     private int year;
     private Gearbox gearbox;
     private String VIN_id;
-    private boolean isSold;
     private String colour;
     private int mileage;
+    private boolean isSold;
 
     //default ctor
     public Vehicle(String make, String model, int year, Gearbox gearbox, String VIN_id, String colour, int mileage) {
@@ -77,7 +77,7 @@ public abstract class Vehicle {
     //other methods
     @Override
     public String toString() {
-        return "Vehicle{" + "make=" + make + ", model=" + model + ", year=" + year + ", gearbox=" + gearbox + ", VIN_id=" + VIN_id + ", isSold=" + isSold + ", colour=" + colour + ", mileage=" + mileage + '}';
+        return "Vehicle{" + "make=" + make + "\t model=" + model + "\t year=" + year + "\t gearbox=" + gearbox + "\t VIN_id=" + VIN_id + "\t colour=" + colour + "\t mileage=" + mileage + "\t isSold=" + isSold + '}';
     }
 
 }

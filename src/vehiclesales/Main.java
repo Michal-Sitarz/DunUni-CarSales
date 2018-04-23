@@ -1,8 +1,10 @@
 package vehiclesales;
 
 import java.util.ArrayList;
+import java.util.Random;
 import uod.gla.menu.MenuBuilder;
 import uod.gla.menu.MenuItem;
+import uod.gla.util.Reader;
 
 /**
  * @author Michael Sitarz
@@ -31,9 +33,10 @@ public class Main {
         System.out.println("Welcome in the interactive Vehicle Sales system.");
         MenuItem n = new MenuItem("N", "New Vehicle", menu, "displayMenu_NewVehicle");
         MenuItem o = new MenuItem("O", "Optional accessories", menu, "displayMenu_OptionalAccessories");
-        MenuItem s = new MenuItem("S", "Sold/Transferred vehicle", menu, "displayMenu_SoldTransferredVehicle");
+        MenuItem t = new MenuItem("T", "Sold/Transferred vehicle", menu, "displayMenu_SoldTransferredVehicle");
         MenuItem d = new MenuItem("D", "Dispaly details", menu, "displayMenu_DisplayDetails");
-        MenuBuilder.displayMenu(n, o, s, d);
+        MenuItem s = new MenuItem("S", "Search for a vehicle", menu, "displayMenu_SearchForVehicle");
+        MenuBuilder.displayMenu(n, o, t, d, s);
     }
 
     // menu: New Vehicle
@@ -43,7 +46,58 @@ public class Main {
     }
 
     public static void addNewVehicle() {
-        System.out.println("[test] addNewVehicle [test]");
+        // user input - vehicle's attributes
+        String newMake = Reader.readNameString("Please enter the vehicle's make.");
+        String newModel = Reader.readNameString("Please enter the vehicle's model.");
+        int newYear = Reader.readInt("Please enter the vehicle's year of production.", 1990, 2099);
+        Gearbox newGearbox = Reader.readEnum("Please choose the gearbox type from 2 available options: auto, manual.", Gearbox.class);
+        String newVIN_id = fakeVINGenerator(newMake, newModel, newYear).toUpperCase();
+        String newColour = Reader.readNameString("Please enter vehicle's body colour.").toLowerCase();
+        int newMileage = Reader.readInt("Please enter vehicle's current mileage.", 0, 1000000);
+
+        VehicleType chosenVehicleType = Reader.readEnum("Please choose vehicle's type:", VehicleType.class);
+        // create object using user's input data and correct Object type
+        switch (chosenVehicleType) {
+            case Hatchback:
+                Vehicle vh = new Hatchback(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                if(listOfVehicles.add(vh)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                break;
+
+            case Saloon:
+                Vehicle vs = new Saloon(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                if(listOfVehicles.add(vs)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                break;
+
+            case Estate:
+                Vehicle ve = new Estate(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                if(listOfVehicles.add(ve)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                break;
+
+            case SUV:
+                Vehicle vsv = new SUV(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                if(listOfVehicles.add(vsv)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                break;
+
+            case Motorbike:
+                Vehicle vm = new Motorbike(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                if(listOfVehicles.add(vm)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                break;
+        }
+
+        /*
+        // add record to the ArrayList
+        boolean addToExistingChoice = Reader.readBoolean("Do you want to add this vehicle to the existing Vehicle Register List? (true/false)");
+        if (!addToExistingChoice) {
+            boolean deleteCurrentConfirm = Reader.readBoolean("This operation will delete current list. You won't be able to access its records anymore.\nPlease confirm that you want to delete existing list and create a new one. (true/false).");
+            if (deleteCurrentConfirm) {
+                //delete current, add new and confirm completion
+            } else {
+                System.out.println("Operation canceled.");
+            }
+        } else {
+            //add new and confirm completion
+        }
+         */
     }
 
     // menu: Optional accessories
@@ -76,27 +130,100 @@ public class Main {
         System.out.println("[test] removeVehicleEntryFromSystem [test]");
     }
 
-    // menu: Dispaly details
+    // menu: Display details
     public static void displayMenu_DisplayDetails() {
-        MenuItem s = new MenuItem("S", "Search for a vehicle (and display the details of)", menu, "searchForVehicle");
         MenuItem a = new MenuItem("A", "Display details of ALL AVAILABLE vehicles", menu, "displayAllAvailableVehicles");
-        MenuItem d = new MenuItem("D", "Display details of ALL sold vehicles", menu, "displayAllSoldVehicles");
-        MenuBuilder.displayMenuOnce(s, a, d);
-    }
-
-    public static void searchForVehicle() {
-        System.out.println("[test] searchForVehicle [test]");
+        MenuItem s = new MenuItem("S", "Display details of ALL sold vehicles", menu, "displayAllSoldVehicles");
+        MenuBuilder.displayMenuOnce(a, s);
     }
 
     public static void displayAllAvailableVehicles() {
-        System.out.println("[test] displayAllAvailableVehicles [test]");
-        
-        //display ALL vehicles (available+sold) >>> fix this!
-        listOfVehicles.forEach((a)->System.out.println(a.toString()));
+        listOfVehicles.forEach((v) -> {
+            if (!v.isSold()) {
+                System.out.println(v.toString());
+            }
+        });
     }
 
     public static void displayAllSoldVehicles() {
-        System.out.println("[test] displayAllSoldVehicles [test]");
+        listOfVehicles.forEach((v) -> {
+            if (v.isSold()) {
+                System.out.println(v.toString());
+            }
+        });
+    }
+
+    // menu: Search for a vehicle
+    public static void displayMenu_SearchForVehicle() {
+        MenuItem a = new MenuItem("A", "Search for a vehicle's make", menu, "searchForVehiclesMake");
+        MenuItem o = new MenuItem("O", "Search for a vehicle's model", menu, "searchForVehiclesModel");
+        MenuItem m = new MenuItem("M", "Search for a vehicle's make & model", menu, "searchForVehiclesMakeModel");
+        MenuBuilder.displayMenuOnce(a, o, m);
+    }
+
+    public static void searchForVehiclesMake() {
+        //user input
+        String searchQueryMake = Reader.readNameString("Please enter vehicle's make that you're searching for.").toLowerCase();
+
+        ArrayList<Vehicle> searchResults = new ArrayList<>();
+        //array search
+        listOfVehicles.forEach((v) -> {
+            if (v.getMake().toLowerCase().equals(searchQueryMake)) {
+                searchResults.add(v);
+            }
+            
+        });
+
+        //display results
+        if (searchResults.isEmpty()) {
+            System.out.println("[! Not found any vehicles that match your search criteria. !]");
+        } else {
+            searchResults.forEach((r) -> System.out.println(r.toString()));
+        }
+    }
+
+    public static void searchForVehiclesModel() {
+        //user input
+        String searchQueryModel = Reader.readNameString("Please enter vehicle's model that you're searching for.").toLowerCase();
+
+        ArrayList<Vehicle> searchResults = new ArrayList<>();
+        //array search
+        listOfVehicles.forEach((v) -> {
+            if (v.getModel().toLowerCase().equals(searchQueryModel)) {
+                searchResults.add(v);
+            }
+            
+        });
+
+        //display results
+        if (searchResults.isEmpty()) {
+            System.out.println("[! Not found any vehicles that match your search criteria. !]");
+        } else {
+            searchResults.forEach((r) -> System.out.println(r.toString()));
+        }
+
+    }
+
+    public static void searchForVehiclesMakeModel() {
+        //user input
+        String searchQueryMake = Reader.readNameString("Please enter vehicle's make that you're searching for.").toLowerCase();
+        String searchQueryModel = Reader.readNameString("Please enter vehicle's model that you're searching for.").toLowerCase();
+
+        ArrayList<Vehicle> searchResults = new ArrayList<>();
+        //array search
+        listOfVehicles.forEach((v) -> {
+            if (v.getMake().toLowerCase().equals(searchQueryMake) && v.getModel().toLowerCase().equals(searchQueryModel)) {
+                searchResults.add(v);
+            }
+        });
+
+        //display results
+        if (searchResults.isEmpty()) {
+            System.out.println("[! Not found any vehicles that match your search criteria. !]");
+        } else {
+            searchResults.forEach((r) -> System.out.println(r.toString()));
+        }
+
     }
 
     // OTHER methods
@@ -111,19 +238,26 @@ public class Main {
         listOfVehicles.add(v3s);
         Vehicle v4s = new Saloon("BMW", "525i Executive", 2008, Gearbox.auto, "BMW200808525EX285", "red", 66200);
         listOfVehicles.add(v4s);
-        Vehicle v5e = new Estate("Honda", "Odyssey", 2017, Gearbox.auto, "HON201707ODY12209", "silver", 5, true);
+        Vehicle v5e = new Estate("Honda", "Odyssey", 2017, Gearbox.auto, "HON201707ODY12209", "silver", 5);
         listOfVehicles.add(v5e);
-        Vehicle v6e = new Estate("Nissan", "Stagea", 2002, Gearbox.manual, "NIS200212STA97211", "black", 15005, false);
+        Vehicle v6e = new Estate("Nissan", "Stagea", 2002, Gearbox.manual, "NIS200212STA97211", "black", 15005);
         listOfVehicles.add(v6e);
-        Vehicle v7sv = new SUV("Subaru", "Forester", 2003, Gearbox.manual, "SUB200303FRS34034", "blue metallic", 170700, true);
+        Vehicle v7sv = new SUV("Subaru", "Forester", 2003, Gearbox.manual, "SUB200303FRS34034", "blue metallic", 170700);
         v7sv.setIsSold(true);
         listOfVehicles.add(v7sv);
-        Vehicle v8sv = new SUV("Honda", "CRV", 2018, Gearbox.auto, "HON201808CRV98782", "purple", 5, false);
+        Vehicle v8sv = new SUV("Honda", "CRV", 2018, Gearbox.auto, "HON201808CRV98782", "purple", 5);
         listOfVehicles.add(v8sv);
-        Vehicle v9m = new Motorbike("Suzuki", "Hayabusa", 2016, Gearbox.manual, "SUZ201601HAY23310", "pearl red", 2000, false);
+        Vehicle v9m = new Motorbike("Suzuki", "Hayabusa", 2016, Gearbox.manual, "SUZ201601HAY23310", "pearl red", 2000);
         listOfVehicles.add(v9m);
-        Vehicle v10m = new Motorbike("BMW", "GS650", 2014, Gearbox.manual, "BMW201404GS602922", "yellow", 12000, true);
+        Vehicle v10m = new Motorbike("BMW", "GS650", 2014, Gearbox.manual, "BMW201404GS602922", "yellow", 12000);
         listOfVehicles.add(v10m);
+    }
+
+    public static String fakeVINGenerator(String make, String model, int year) {
+
+        Random randomEnding = new Random();
+        return make.substring(0, 3) + Integer.toString(year) + Integer.toString(year).substring(2) + model.substring(0, 3) + Integer.toString(randomEnding.nextInt(99999));
+
     }
 
 }
