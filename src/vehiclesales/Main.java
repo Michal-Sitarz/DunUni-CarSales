@@ -60,27 +60,37 @@ public class Main {
         switch (chosenVehicleType) {
             case Hatchback:
                 Vehicle vh = new Hatchback(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
-                if(listOfVehicles.add(vh)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                if (listOfVehicles.add(vh)) {
+                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                }
                 break;
 
             case Saloon:
                 Vehicle vs = new Saloon(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
-                if(listOfVehicles.add(vs)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                if (listOfVehicles.add(vs)) {
+                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                }
                 break;
 
             case Estate:
                 Vehicle ve = new Estate(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
-                if(listOfVehicles.add(ve)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                if (listOfVehicles.add(ve)) {
+                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                }
                 break;
 
             case SUV:
                 Vehicle vsv = new SUV(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
-                if(listOfVehicles.add(vsv)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                if (listOfVehicles.add(vsv)) {
+                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                }
                 break;
 
             case Motorbike:
                 Vehicle vm = new Motorbike(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
-                if(listOfVehicles.add(vm)) System.out.println("Vehicle: "+newYear+" "+newMake+" "+newModel+" has been succesfully added to the Vehicle List.");
+                if (listOfVehicles.add(vm)) {
+                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                }
                 break;
         }
 
@@ -118,29 +128,53 @@ public class Main {
     // menu: Sold/Transferred vehicle
     public static void displayMenu_SoldTransferredVehicle() {
         MenuItem m = new MenuItem("M", "Mark vehicle as \"sold\"", menu, "markVehicleAsSold");
-        MenuItem e = new MenuItem("E", "Remove vehicle entirely from the system (unreversible)", menu, "removeVehicleEntryFromSystem");
+        MenuItem e = new MenuItem("E", "Remove vehicle entirely from the system (irreversibly)", menu, "removeVehicleEntryFromSystem");
         MenuBuilder.displayMenuOnce(m, e);
     }
 
     public static void markVehicleAsSold() {
-        System.out.println("[test] markVehicleAsSold [test]");
+        displayAllAvailableVehicles();
+        
+        int listIndexChoice = Reader.readInt("\nPlease enter the number of a position/entry to mark \"as sold\".", 0, listOfVehicles.size() - 1);
+        if (Reader.readBoolean("This operation is irreversible. Do you want to continue? (Yes/No).") && !listOfVehicles.get(listIndexChoice).isSold()) {
+            listOfVehicles.get(listIndexChoice).setAsSold();
+        }
+        if(listOfVehicles.get(listIndexChoice).isSold())
+        {
+            System.out.println("\nThis vehicle is marked \"as sold\" >>> "+listOfVehicles.get(listIndexChoice).toString()+"\n");
+        }
+        
+        displayAllSoldVehicles();
+
     }
 
     public static void removeVehicleEntryFromSystem() {
-        System.out.println("[test] removeVehicleEntryFromSystem [test]");
+        displayAllVehicles();
+        int listIndexChoice = Reader.readInt("\nPlease enter the number of a position/entry to remove from the list.", 0, listOfVehicles.size() - 1);
+        if (Reader.readBoolean("This operation will irreversibly remove the entry: \n" + listOfVehicles.get(listIndexChoice).toString() + "\n from the list. Please confirm (Yes/No).")) {
+            listOfVehicles.remove(listIndexChoice);
+        }
+        displayAllVehicles();
     }
 
     // menu: Display details
     public static void displayMenu_DisplayDetails() {
-        MenuItem a = new MenuItem("A", "Display details of ALL AVAILABLE vehicles", menu, "displayAllAvailableVehicles");
-        MenuItem s = new MenuItem("S", "Display details of ALL sold vehicles", menu, "displayAllSoldVehicles");
-        MenuBuilder.displayMenuOnce(a, s);
+        MenuItem a = new MenuItem("A", "Display details of ALL vehicles", menu, "displayAllVehicles");
+        MenuItem v = new MenuItem("V", "Display details of all AVAILABLE vehicles", menu, "displayAllAvailableVehicles");
+        MenuItem s = new MenuItem("S", "Display details of all SOLD vehicles", menu, "displayAllSoldVehicles");
+        MenuBuilder.displayMenuOnce(a, v, s);
+    }
+
+    public static void displayAllVehicles() {
+        listOfVehicles.forEach((v) -> {
+            System.out.println("[" + listOfVehicles.indexOf(v) + "] " + v.toString());
+        });
     }
 
     public static void displayAllAvailableVehicles() {
         listOfVehicles.forEach((v) -> {
             if (!v.isSold()) {
-                System.out.println(v.toString());
+                System.out.println("[" + listOfVehicles.indexOf(v) + "] " + v.toString());
             }
         });
     }
@@ -148,7 +182,7 @@ public class Main {
     public static void displayAllSoldVehicles() {
         listOfVehicles.forEach((v) -> {
             if (v.isSold()) {
-                System.out.println(v.toString());
+                System.out.println("[" + listOfVehicles.indexOf(v) + "] " + v.toString());
             }
         });
     }
@@ -171,7 +205,6 @@ public class Main {
             if (v.getMake().toLowerCase().equals(searchQueryMake)) {
                 searchResults.add(v);
             }
-            
         });
 
         //display results
@@ -192,7 +225,7 @@ public class Main {
             if (v.getModel().toLowerCase().equals(searchQueryModel)) {
                 searchResults.add(v);
             }
-            
+
         });
 
         //display results
@@ -229,12 +262,12 @@ public class Main {
     // OTHER methods
     public static void loadDataSample() {
         Vehicle v1h = new Hatchback("Honda", "Civic", 2004, Gearbox.manual, "HON200404CIV48275", "golden", 135505);
-        v1h.setIsSold(true);
+        v1h.setAsSold();
         listOfVehicles.add(v1h);
         Vehicle v2h = new Hatchback("Suzuki", "Ignis", 2018, Gearbox.auto, "SUZ201808IGN55392", "orange", 20);
         listOfVehicles.add(v2h);
         Vehicle v3s = new Saloon("Toyota", "Chaser", 1998, Gearbox.manual, "TOY199808CHA29380", "white", 220000);
-        v3s.setIsSold(true);
+        v3s.setAsSold();
         listOfVehicles.add(v3s);
         Vehicle v4s = new Saloon("BMW", "525i Executive", 2008, Gearbox.auto, "BMW200808525EX285", "red", 66200);
         listOfVehicles.add(v4s);
@@ -243,7 +276,7 @@ public class Main {
         Vehicle v6e = new Estate("Nissan", "Stagea", 2002, Gearbox.manual, "NIS200212STA97211", "black", 15005);
         listOfVehicles.add(v6e);
         Vehicle v7sv = new SUV("Subaru", "Forester", 2003, Gearbox.manual, "SUB200303FRS34034", "blue metallic", 170700);
-        v7sv.setIsSold(true);
+        v7sv.setAsSold();
         listOfVehicles.add(v7sv);
         Vehicle v8sv = new SUV("Honda", "CRV", 2018, Gearbox.auto, "HON201808CRV98782", "purple", 5);
         listOfVehicles.add(v8sv);
