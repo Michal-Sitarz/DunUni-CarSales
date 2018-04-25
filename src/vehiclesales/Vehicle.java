@@ -27,9 +27,9 @@ public abstract class Vehicle {
     }
 
     //SETters (available)
-    public void setIsSold(boolean isSold) {
+    public void setAsSold() {
         if (!this.isSold) {
-            this.isSold = isSold;
+            this.isSold = true;
         }
     }
 
@@ -78,6 +78,14 @@ public abstract class Vehicle {
     @Override
     public String toString() {
         return "Vehicle{" + "make=" + make + "\t model=" + model + "\t year=" + year + "\t gearbox=" + gearbox + "\t VIN_id=" + VIN_id + "\t colour=" + colour + "\t mileage=" + mileage + "\t isSold=" + isSold + '}';
+    }
+
+    public String toStringBasicFields() {
+        return year + " " + make + " " + model;
+    }
+    
+    public String toStringAllAccessories(){
+        return "";
     }
 
 }

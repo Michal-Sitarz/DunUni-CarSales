@@ -13,13 +13,20 @@ public class SUV extends Car {
     }
 
     //SETters
-    public void setAWD_drivetrain(boolean AWD_drivetrain) {
-        this.AWD_drivetrain = AWD_drivetrain;
+    public void setAWD_drivetrain() {
+        this.AWD_drivetrain = true;
     }
 
     //GETters
-    public boolean isAWD_drivetrain() {
+    public boolean hasAWD_drivetrain() {
         return AWD_drivetrain;
     }
+
+    @Override
+    public String toStringAllAccessories() {
+        return super.toStringAllAccessories()+"\t AWD_drivetrain="+AWD_drivetrain;
+    }
+    
+    
 
 }

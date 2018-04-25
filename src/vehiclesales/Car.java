@@ -3,7 +3,7 @@ package vehiclesales;
 /**
  * @author Michael Sitarz
  */
-public class Car extends Vehicle {
+public abstract class Car extends Vehicle {
 
     private boolean sat_nav;
     private boolean parking_sensor;
@@ -16,37 +16,42 @@ public class Car extends Vehicle {
     }
 
     //SETters
-    public void setSat_nav(boolean sat_nav) {
-        this.sat_nav = sat_nav;
+    public void setSat_nav() {
+        this.sat_nav = true;
     }
 
-    public void setParking_sensor(boolean parking_sensor) {
-        this.parking_sensor = parking_sensor;
+    public void setParking_sensor() {
+        this.parking_sensor = true;
     }
 
-    public void setTowbar(boolean towbar) {
-        this.towbar = towbar;
+    public void setTowbar() {
+        this.towbar = true;
     }
 
-    public void setRoof_rack(boolean roof_rack) {
-        this.roof_rack = roof_rack;
+    public void setRoof_rack() {
+        this.roof_rack = true;
     }
 
     //GETters
-    public boolean isSat_nav() {
+    public boolean hasSat_nav() {
         return sat_nav;
     }
 
-    public boolean isParking_sensor() {
+    public boolean hasParking_sensor() {
         return parking_sensor;
     }
 
-    public boolean isTowbar() {
+    public boolean hasTowbar() {
         return towbar;
     }
 
-    public boolean isRoof_rack() {
+    public boolean hasRoof_rack() {
         return roof_rack;
+    }
+
+    @Override
+    public String toStringAllAccessories() {
+        return "sat_nav=" + sat_nav + "\t parking_sensor=" + parking_sensor + "\t towbar=" + towbar + "\t roof_rack=" + roof_rack;
     }
 
 }

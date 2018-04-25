@@ -12,7 +12,7 @@ import uod.gla.util.Reader;
 public class Main {
 
     static Main menu = new Main();
-    private static ArrayList<Vehicle> listOfVehicles = new ArrayList<Vehicle>();
+    private static ArrayList<Vehicle> listOfVehicles = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -59,37 +59,37 @@ public class Main {
         // create object using user's input data and correct Object type
         switch (chosenVehicleType) {
             case Hatchback:
-                Vehicle vh = new Hatchback(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                Hatchback vh = new Hatchback(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
                 if (listOfVehicles.add(vh)) {
-                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                    System.out.println("Vehicle: " + vh.toStringBasicFields() + " has been succesfully added to the Vehicle List.");
                 }
                 break;
 
             case Saloon:
-                Vehicle vs = new Saloon(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                Saloon vs = new Saloon(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
                 if (listOfVehicles.add(vs)) {
-                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                    System.out.println("Vehicle: " + vs.toStringBasicFields() + " has been succesfully added to the Vehicle List.");
                 }
                 break;
 
             case Estate:
-                Vehicle ve = new Estate(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                Estate ve = new Estate(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
                 if (listOfVehicles.add(ve)) {
-                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                    System.out.println("Vehicle: " + ve.toStringBasicFields() + " has been succesfully added to the Vehicle List.");
                 }
                 break;
 
             case SUV:
-                Vehicle vsv = new SUV(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
-                if (listOfVehicles.add(vsv)) {
-                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                SUV vu = new SUV(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                if (listOfVehicles.add(vu)) {
+                    System.out.println("Vehicle: " + vu.toStringBasicFields() + " has been succesfully added to the Vehicle List.");
                 }
                 break;
 
             case Motorbike:
-                Vehicle vm = new Motorbike(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
+                Motorbike vm = new Motorbike(newMake, newModel, newYear, newGearbox, newVIN_id, newColour, newMileage);
                 if (listOfVehicles.add(vm)) {
-                    System.out.println("Vehicle: " + newYear + " " + newMake + " " + newModel + " has been succesfully added to the Vehicle List.");
+                    System.out.println("Vehicle: " + vm.toStringBasicFields() + " has been succesfully added to the Vehicle List.");
                 }
                 break;
         }
@@ -113,16 +113,209 @@ public class Main {
     // menu: Optional accessories
     public static void displayMenu_OptionalAccessories() {
         MenuItem a = new MenuItem("A", "Add optional accessories", menu, "addAccessories");
-        MenuItem e = new MenuItem("E", "Remove optional accessories", menu, "removeAccessories");
+        MenuItem e = new MenuItem("E", "Remove optional accessories (motorbikes only)", menu, "removeAccessories");
         MenuBuilder.displayMenuOnce(a, e);
     }
 
     public static void addAccessories() {
-        System.out.println("[test] addAccessories [test]");
+        displayVehiclesAccessories();
+        Object obj = listOfVehicles.get(Reader.readInt("\nPlease enter the index of a vehicle to add accessories.", 0, listOfVehicles.size() - 1));
+
+        if (!(obj instanceof Motorbike) && Reader.readBoolean("You won't be able to remove them, when fitted. Continue? (Yes/No).")) {
+
+            // Hatchback
+            if (obj instanceof Hatchback) {
+                Hatchback vh = (Hatchback) obj;
+                System.out.println("\n"+vh.toStringBasicFields() + ": " + vh.toStringAllAccessories());
+                switch (Reader.readInt("Which accessory do you want to fit: \n[1] Sat-Nav \n[2] Parking sensor \n[3] Tow-bar \n[4] Roof rack", 1, 4)) {
+                    case 1:
+                        if (!vh.hasSat_nav()) {
+                            vh.setSat_nav();
+                        } else {
+                            System.out.println("*** This vehicle has Sat Nav already fitted. ***");
+                        }
+                        break;
+                    case 2:
+                        if (!vh.hasParking_sensor()) {
+                            vh.setParking_sensor();
+                        } else {
+                            System.out.println("*** This vehicle has Parking sensor already fitted. ***");
+                        }
+                        break;
+                    case 3:
+                        if (!vh.hasTowbar()) {
+                            vh.setTowbar();
+                        } else {
+                            System.out.println("*** This vehicle has Tow-bar already fitted.");
+                        }
+                        break;
+                    case 4:
+                        if (!vh.hasRoof_rack()) {
+                            vh.setRoof_rack();
+                        } else {
+                            System.out.println("*** This vehicle has Roof rack already fitted.");
+                        }
+                        break;
+                }
+                System.out.println("\n"+vh.toStringBasicFields() + ": " + vh.toStringAllAccessories());
+
+                // Saloon
+            } else if (obj instanceof Saloon) {
+                Saloon vs = (Saloon) obj;
+                System.out.println("\n"+vs.toStringBasicFields() + ": " + vs.toStringAllAccessories());
+                switch (Reader.readInt("Which accessory do you want to fit: \n[1] Sat-Nav \n[2] Parking sensor \n[3] Tow-bar \n[4] Roof rack", 1, 4)) {
+                    case 1:
+                        if (!vs.hasSat_nav()) {
+                            vs.setSat_nav();
+                        } else {
+                            System.out.println("*** This vehicle has Sat Nav already fitted. ***");
+                        }
+                        break;
+                    case 2:
+                        if (!vs.hasParking_sensor()) {
+                            vs.setParking_sensor();
+                        } else {
+                            System.out.println("*** This vehicle has Parking sensor already fitted. ***");
+                        }
+                        break;
+                    case 3:
+                        if (!vs.hasTowbar()) {
+                            vs.setTowbar();
+                        } else {
+                            System.out.println("*** This vehicle has Tow-bar already fitted. ***");
+                        }
+                        break;
+                    case 4:
+                        if (!vs.hasRoof_rack()) {
+                            vs.setRoof_rack();
+                        } else {
+                            System.out.println("*** This vehicle has Roof rack already fitted. ***");
+                        }
+                        break;
+                }
+                System.out.println("\n"+vs.toStringBasicFields() + ": " + vs.toStringAllAccessories());
+
+                // Estate
+            } else if (obj instanceof Estate) {
+                Estate ve = (Estate) obj;
+                System.out.println("\n"+ve.toStringBasicFields() + ": " + ve.toStringAllAccessories());
+                switch (Reader.readInt("Which accessory do you want to fit: \n[1] Sat-Nav \n[2] Parking sensor \n[3] Tow-bar \n[4] Roof rack \n[5] Third row seats", 1, 5)) {
+                    case 1:
+                        if (!ve.hasSat_nav()) {
+                            ve.setSat_nav();
+                        } else {
+                            System.out.println("*** This vehicle has Sat Nav already fitted. ***");
+                        }
+                        break;
+                    case 2:
+                        if (!ve.hasParking_sensor()) {
+                            ve.setParking_sensor();
+                        } else {
+                            System.out.println("*** This vehicle has Parking sensor already fitted. ***");
+                        }
+                        break;
+                    case 3:
+                        if (!ve.hasTowbar()) {
+                            ve.setTowbar();
+                        } else {
+                            System.out.println("*** This vehicle has Tow-bar already fitted. ***");
+                        }
+                        break;
+                    case 4:
+                        if (!ve.hasRoof_rack()) {
+                            ve.setRoof_rack();
+                        } else {
+                            System.out.println("*** This vehicle has Roof rack already fitted. ***");
+                        }
+                        break;
+                    case 5:
+                        if (!ve.hasThird_row_seats()) {
+                            ve.setThird_row_seats();
+                        } else {
+                            System.out.println("*** This vehicle has Third row seats already fitted. ***");
+                        }
+                        break;
+                }
+                System.out.println("\n"+ve.toStringBasicFields() + ": " + ve.toStringAllAccessories());
+
+                // SUV
+            } else if (obj instanceof SUV) {
+                SUV vsu = (SUV) obj;
+                System.out.println("\n"+vsu.toStringBasicFields() + ": " + vsu.toStringAllAccessories());
+                switch (Reader.readInt("Which accessory do you want to fit: \n[1] Sat-Nav \n[2] Parking sensor \n[3] Tow-bar \n[4] Roof rack \n[5] Third row seats", 1, 5)) {
+                    case 1:
+                        if (!vsu.hasSat_nav()) {
+                            vsu.setSat_nav();
+                        } else {
+                            System.out.println("*** This vehicle has Sat Nav already fitted. ***");
+                        }
+                        break;
+                    case 2:
+                        if (!vsu.hasParking_sensor()) {
+                            vsu.setParking_sensor();
+                        } else {
+                            System.out.println("*** This vehicle has Parking sensor already fitted. ***");
+                        }
+                        break;
+                    case 3:
+                        if (!vsu.hasTowbar()) {
+                            vsu.setTowbar();
+                        } else {
+                            System.out.println("*** This vehicle has Tow-bar already fitted. ***");
+                        }
+                        break;
+                    case 4:
+                        if (!vsu.hasRoof_rack()) {
+                            vsu.setRoof_rack();
+                        } else {
+                            System.out.println("*** This vehicle has Roof rack already fitted. ***");
+                        }
+                        break;
+                    case 5:
+                        if (!vsu.hasAWD_drivetrain()) {
+                            vsu.setAWD_drivetrain();
+                        } else {
+                            System.out.println("*** This vehicle has Third row seats already fitted. ***");
+                        }
+                        break;
+                }
+                System.out.println("\n"+vsu.toStringBasicFields() + ": " + vsu.toStringAllAccessories());
+            }
+        } else {
+            Motorbike vm = (Motorbike) obj;
+            System.out.println(vm.toStringBasicFields() + ": " + vm.toStringAllAccessories());
+            if (!vm.hasLuggage_box()) {
+                vm.setLuggage_box(true);
+                System.out.println("The Luggage Box has been fitted.");
+            } else {
+                System.out.println("This motorbike has a Luggage Box fitted already.");
+            }
+            System.out.println(vm.toStringBasicFields() + ": " + vm.toStringAllAccessories());
+
+        }
+
     }
 
     public static void removeAccessories() {
-        System.out.println("[test] removeAccessories [test]");
+        System.out.println("\n*** Please note this option is only available for MOTORBIKES! ***\n");
+        listOfVehicles.forEach((v) -> {
+            if (v.getClass() == Motorbike.class) {
+                System.out.println("[" + listOfVehicles.indexOf(v) + "] " + v.toStringBasicFields() + " " + v.toStringAllAccessories());
+            }
+        });
+
+        Object obj = listOfVehicles.get(Reader.readInt("\nPlease enter the index of a vehicle to remove accessories.", 0, listOfVehicles.size() - 1));
+
+        if (obj instanceof Motorbike) {
+            Motorbike m = (Motorbike) obj;
+            if (m.hasLuggage_box()) {
+                m.setLuggage_box(false);
+            } else {
+                System.out.println("This motorbike doesn't have a Luggage Box fitted.");
+            }
+        } else {
+            System.out.println("This index doesn't correspond to a motorbike.");
+        }
     }
 
     // menu: Sold/Transferred vehicle
@@ -134,23 +327,22 @@ public class Main {
 
     public static void markVehicleAsSold() {
         displayAllAvailableVehicles();
-        
-        int listIndexChoice = Reader.readInt("\nPlease enter the number of a position/entry to mark \"as sold\".", 0, listOfVehicles.size() - 1);
+
+        int listIndexChoice = Reader.readInt("\nPlease enter the index of a vehicle to mark \"as sold\".", 0, listOfVehicles.size() - 1);
         if (Reader.readBoolean("This operation is irreversible. Do you want to continue? (Yes/No).") && !listOfVehicles.get(listIndexChoice).isSold()) {
             listOfVehicles.get(listIndexChoice).setAsSold();
         }
-        if(listOfVehicles.get(listIndexChoice).isSold())
-        {
-            System.out.println("\nThis vehicle is marked \"as sold\" >>> "+listOfVehicles.get(listIndexChoice).toString()+"\n");
+        if (listOfVehicles.get(listIndexChoice).isSold()) {
+            System.out.println("\nThis vehicle is marked \"as sold\" >>> " + listOfVehicles.get(listIndexChoice).toString() + "\n");
         }
-        
+
         displayAllSoldVehicles();
 
     }
 
     public static void removeVehicleEntryFromSystem() {
         displayAllVehicles();
-        int listIndexChoice = Reader.readInt("\nPlease enter the number of a position/entry to remove from the list.", 0, listOfVehicles.size() - 1);
+        int listIndexChoice = Reader.readInt("\nPlease enter the index of a vehicle to remove from the list.", 0, listOfVehicles.size() - 1);
         if (Reader.readBoolean("This operation will irreversibly remove the entry: \n" + listOfVehicles.get(listIndexChoice).toString() + "\n from the list. Please confirm (Yes/No).")) {
             listOfVehicles.remove(listIndexChoice);
         }
@@ -160,14 +352,21 @@ public class Main {
     // menu: Display details
     public static void displayMenu_DisplayDetails() {
         MenuItem a = new MenuItem("A", "Display details of ALL vehicles", menu, "displayAllVehicles");
+        MenuItem c = new MenuItem("C", "Display all vehicles' accessories", menu, "displayVehiclesAccessories");
         MenuItem v = new MenuItem("V", "Display details of all AVAILABLE vehicles", menu, "displayAllAvailableVehicles");
         MenuItem s = new MenuItem("S", "Display details of all SOLD vehicles", menu, "displayAllSoldVehicles");
-        MenuBuilder.displayMenuOnce(a, v, s);
+        MenuBuilder.displayMenuOnce(a, c, v, s);
     }
 
     public static void displayAllVehicles() {
         listOfVehicles.forEach((v) -> {
             System.out.println("[" + listOfVehicles.indexOf(v) + "] " + v.toString());
+        });
+    }
+
+    public static void displayVehiclesAccessories() {
+        listOfVehicles.forEach((v) -> {
+            System.out.println("[" + listOfVehicles.indexOf(v) + "] " + v.toStringBasicFields() + ": \t" + v.toStringAllAccessories());
         });
     }
 
@@ -256,33 +455,32 @@ public class Main {
         } else {
             searchResults.forEach((r) -> System.out.println(r.toString()));
         }
-
     }
 
     // OTHER methods
     public static void loadDataSample() {
-        Vehicle v1h = new Hatchback("Honda", "Civic", 2004, Gearbox.manual, "HON200404CIV48275", "golden", 135505);
+        Hatchback v1h = new Hatchback("Honda", "Civic", 2004, Gearbox.manual, "HON200404CIV48275", "golden", 135505);
         v1h.setAsSold();
         listOfVehicles.add(v1h);
-        Vehicle v2h = new Hatchback("Suzuki", "Ignis", 2018, Gearbox.auto, "SUZ201808IGN55392", "orange", 20);
+        Hatchback v2h = new Hatchback("Suzuki", "Ignis", 2018, Gearbox.auto, "SUZ201808IGN55392", "orange", 20);
         listOfVehicles.add(v2h);
-        Vehicle v3s = new Saloon("Toyota", "Chaser", 1998, Gearbox.manual, "TOY199808CHA29380", "white", 220000);
+        Saloon v3s = new Saloon("Toyota", "Chaser", 1998, Gearbox.manual, "TOY199808CHA29380", "white", 220000);
         v3s.setAsSold();
         listOfVehicles.add(v3s);
-        Vehicle v4s = new Saloon("BMW", "525i Executive", 2008, Gearbox.auto, "BMW200808525EX285", "red", 66200);
+        Saloon v4s = new Saloon("BMW", "525i Executive", 2008, Gearbox.auto, "BMW200808525EX285", "red", 66200);
         listOfVehicles.add(v4s);
-        Vehicle v5e = new Estate("Honda", "Odyssey", 2017, Gearbox.auto, "HON201707ODY12209", "silver", 5);
+        Estate v5e = new Estate("Honda", "Odyssey", 2017, Gearbox.auto, "HON201707ODY12209", "silver", 5);
         listOfVehicles.add(v5e);
-        Vehicle v6e = new Estate("Nissan", "Stagea", 2002, Gearbox.manual, "NIS200212STA97211", "black", 15005);
+        Estate v6e = new Estate("Nissan", "Stagea", 2002, Gearbox.manual, "NIS200212STA97211", "black", 15005);
         listOfVehicles.add(v6e);
-        Vehicle v7sv = new SUV("Subaru", "Forester", 2003, Gearbox.manual, "SUB200303FRS34034", "blue metallic", 170700);
+        SUV v7sv = new SUV("Subaru", "Forester", 2003, Gearbox.manual, "SUB200303FRS34034", "blue metallic", 170700);
         v7sv.setAsSold();
         listOfVehicles.add(v7sv);
-        Vehicle v8sv = new SUV("Honda", "CRV", 2018, Gearbox.auto, "HON201808CRV98782", "purple", 5);
+        SUV v8sv = new SUV("Honda", "CRV", 2018, Gearbox.auto, "HON201808CRV98782", "purple", 5);
         listOfVehicles.add(v8sv);
-        Vehicle v9m = new Motorbike("Suzuki", "Hayabusa", 2016, Gearbox.manual, "SUZ201601HAY23310", "pearl red", 2000);
+        Motorbike v9m = new Motorbike("Suzuki", "Hayabusa", 2016, Gearbox.manual, "SUZ201601HAY23310", "pearl red", 2000);
         listOfVehicles.add(v9m);
-        Vehicle v10m = new Motorbike("BMW", "GS650", 2014, Gearbox.manual, "BMW201404GS602922", "yellow", 12000);
+        Motorbike v10m = new Motorbike("BMW", "GS650", 2014, Gearbox.manual, "BMW201404GS602922", "yellow", 12000);
         listOfVehicles.add(v10m);
     }
 

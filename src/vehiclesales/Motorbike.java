@@ -18,8 +18,13 @@ public class Motorbike extends Vehicle {
     }
 
     //GETters
-    public boolean isLuggage_box() {
+    public boolean hasLuggage_box() {
         return luggage_box;
+    }
+    
+    @Override
+    public String toStringAllAccessories() {
+        return "luggage_box=" + luggage_box;
     }
 
 }

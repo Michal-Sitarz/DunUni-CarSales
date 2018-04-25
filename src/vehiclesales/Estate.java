@@ -13,13 +13,20 @@ public class Estate extends Car {
     }
 
     //SETters
-    public void setThird_row_seats(boolean third_row_seats) {
-        this.third_row_seats = third_row_seats;
+    public void setThird_row_seats() {
+        this.third_row_seats = true;
     }
 
     //GETters
-    public boolean isThird_row_seats() {
+    public boolean hasThird_row_seats() {
         return third_row_seats;
     }
+
+    @Override
+    public String toStringAllAccessories() {
+        return super.toStringAllAccessories()+"\t third_row_seats=" + third_row_seats;
+    }
+    
+    
 
 }
